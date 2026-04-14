@@ -16,9 +16,7 @@ A simple Climber-in-a-box subsystem has been added, but feel free to remove/upda
 Follow the "TODO" comments in the code to set the necessary constants for velocity control of your shooter's flywheel. I recommend doing some research into PID tuning for flywheels to tackle this, but it will significantly improve the consistency of your shots!  
 See [Tuning a Flywheel Velocity Controller](https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/tuning-flywheel.html). PID control is a widely used concept in robotics, even outside of FIRST!
 ### Upgrade your autonomous routines
-Currently, the Autos.java file contains a simple "Move and Shoot" routine that can (and should) be adjusted through testing to fit your robot and your strategy.  
-You can also add more routines that add on to this one to do more complicated actions, such as refuel at the outpost or pass through the trench/over the bump. For more complicated routines, I recommend utilizing distance-based control (more PID control!) for your robot's driving. This will be more consistent than time-based driving, and will be easier to use in longer routines. See the "TODO" comments placed in the code for some more info.  
-To take an extra step, look into [FRC PathPlanner](https://pathplanner.dev/home.html) for designing and implementing your autonomous routines. Once you tune the PID control for the drivetrain, PathPlanner becomes a very intuitive and powerful tool.
+This code uses [FRC PathPlanner](https://pathplanner.dev/home.html) for designing and implementing your autonomous routines. PathPlanner can be an extremely intuitive and powerful tool for creating autonomous paths and building entire autos. I highly recommend reading through the PathPlanner documentation and examples to familiarize yourself with the usage, and then dive into this code to see how it is implemented. I also recommend installing PathPlanner and creating paths and autos of your own!
 ### Add vision targeting
 Implementing vision targeting is a signficant boost to your robot's capabilities in teleop and autonomous. It can enable you to:
 1. Shoot from various distances.
