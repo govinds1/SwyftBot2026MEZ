@@ -5,13 +5,17 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.controllers.DriverController;
 import frc.robot.controllers.OperatorController;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+
+import java.util.HashMap;
+import java.util.List;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,6 +39,9 @@ public class RobotContainer {
   private final DriverController m_driverController = new DriverController(OperatorConstants.kDriverControllerPort);
   // The operator's controller
   private final OperatorController m_operatorController = new OperatorController(OperatorConstants.kOperatorControllerPort);
+
+  // PathPlanner autos.
+  public static HashMap<String, Command> PPAutos = new HashMap<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -92,7 +99,14 @@ public class RobotContainer {
    * 
    */
   public void init() {
-
+    // Add PathPlanner autos to drop-down and build autos.
+    List<String> autoNames = AutoBuilder.getAllAutoNames();
+    if (autoNames != null) {
+      for (String ppAutoName : autoNames) {
+        PPAutos.put(ppAutoName, AutoBuilder.buildAuto(ppAutoName));
+      }
+    }
+    SmartDashboard.putStringArray("Auto List", autoNames.toArray(String[]::new));
   }
 
   /**
@@ -102,7 +116,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Grab selected auto from SmartDashboard drop down menu
-    String selectedAutoName = SmartDashboard.getString("Auto Selector", Autos.autoNames[0]);
-    return Autos.getSelectedAuto(selectedAutoName, m_robotDrive, m_shooter, m_intake);
+    String selectedAutoName = SmartDashboard.getString("Auto Selector", "");
+    return PPAutos.getOrDefault(selectedAutoName, Commands.idle());
   }
 }

@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.controller.HolonomicDriveController;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants.DriveAutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -60,31 +63,41 @@ public class DriveSubsystem extends SubsystemBase {
       new Pose2d()
     );
 
-    // PID Controllers
-    public PIDController m_xController = new PIDController(DriveAutoConstants.kPXYController, 0, 0);
-    public PIDController m_yController = new PIDController(DriveAutoConstants.kPXYController, 0, 0);
-    public ProfiledPIDController m_thetaController = new ProfiledPIDController(
-      DriveAutoConstants.kPThetaController,
-      0, 0,
-      DriveAutoConstants.kThetaControllerConstraints
-    );
-    public HolonomicDriveController m_robotDriveController;
-
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    // Set continuous rotation controller.
-    m_thetaController.enableContinuousInput(0, 2 * Math.PI);
+    // From PathPlanner Example:
+    // Load RobotConfig.
+    try{
+      DriveConstants.config = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
+    }
+    
+    // Configure AutoBuilder last
+    AutoBuilder.configure(
+            this::getPose, // Robot pose supplier
+            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                    new PIDConstants(DriveAutoConstants.kPXYController, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(DriveAutoConstants.kPThetaController, 0.0, 0.0) // Rotation PID constants
+            ),
+            DriveConstants.config, // The robot configuration
+            () -> {
+              // Boolean supplier that controls when the path will be mirrored for the red alliance
+              // This will flip the path being followed to the red side of the field.
+              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-    m_robotDriveController = new HolonomicDriveController(
-        m_xController,
-        m_yController,
-        m_thetaController
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            this // Reference to this subsystem to set requirements
     );
-    // Set controller tolerances.
-    m_xController.setTolerance(DriveAutoConstants.kRobotControllerTolerance.getX());
-    m_yController.setTolerance(DriveAutoConstants.kRobotControllerTolerance.getY());
-    m_thetaController.setTolerance(DriveAutoConstants.kRobotControllerTolerance.getRotation().getRadians());
-    m_robotDriveController.setTolerance(DriveAutoConstants.kRobotControllerTolerance);
   }
 
   @Override
