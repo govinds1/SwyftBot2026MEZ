@@ -9,6 +9,7 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants.ClimberConstants;
@@ -25,6 +26,9 @@ public class ClimberSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Subsystems/Climber/Encoder/Position", m_motor.getEncoder().getPosition());
+    SmartDashboard.putBoolean("Subsystems/Climber/IsRaised", isRaised());
+    SmartDashboard.putBoolean("Subsystems/Climber/IsLowered", isLowered());
   }
 
   public void raiseHook() {
@@ -33,6 +37,15 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void lowerHook() {
     m_motor.set(-ClimberConstants.kClimbSpeed);
+  }
+
+  public boolean isRaised() {
+    return m_motor.getEncoder().getPosition() - ClimberConstants.kClimberUpPosition > -3;
+  }
+
+  public boolean isLowered() {
+    // HIGHLY RECOMMEND TO USE LIMIT SWITCH!!
+    return m_motor.getEncoder().getPosition() < 3;
   }
 
   public void stop() {

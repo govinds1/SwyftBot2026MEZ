@@ -82,8 +82,20 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public Command retractAuto() {
     return Commands.sequence(
+      Commands.runOnce(() -> this.stopRoller(), this),
       Commands.runOnce(() -> this.retract(), this),
       Commands.waitSeconds(IntakeConstants.kIntakeRetractTime),
+      Commands.runOnce(() -> this.stopExtender(), this)
+    );
+  }
+
+  public Command agitateAuto() {
+    return Commands.repeatingSequence(
+      Commands.runOnce(() -> this.retract(), this),
+      Commands.waitSeconds(IntakeConstants.kIntakeAgitateTime),
+      Commands.runOnce(() -> this.extend(), this),
+      Commands.waitSeconds(IntakeConstants.kIntakeAgitateTime)
+    ).andThen(
       Commands.runOnce(() -> this.stopExtender(), this)
     );
   }

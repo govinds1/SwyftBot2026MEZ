@@ -98,8 +98,8 @@ public final class Constants {
 
     // RPM Control
     public static final double kShootingRPM = 6000; // TODO: Update as necessary. Make sure to properly calculate the kMotorReduction value below, and tune the PID and FF values.
-    public static final double kPController = 0.00001; // TODO: Tune. Increment very slowly until shooter smoothly and quickly reaches desired RPM.
-    public static final double kVFeedForward = 0.0002; // TODO: Tune. Increment very slowly until shooter smoothly and quickly reaches desired RPM.
+    public static final double kPController = 0; // TODO: TUNE THIS AFTER VFF! Increment very slowly (starting at 0.00001), until shooter reachers 100% of the desired RPM and 'bounces back' quickly without any oscillation ("jerky" movement).
+    public static final double kVFeedForward = 0.0002; // TODO: TUNE THIS FIRST! Increment very slowly until shooter reaches about 90-95% of the desired RPM.
     public static final double kRPMTolerance = 500; // TODO: Update as necessary.
 
     // TODO: Modify these buttons if necessary.
@@ -118,6 +118,7 @@ public final class Constants {
     public static final double kIntakeExtenderRetractSpeed = 0.2;
     public static final double kIntakeExtendTime = 1.0;
     public static final double kIntakeRetractTime = 1.8;
+    public static final double kIntakeAgitateTime = 0.75;
 
     public static final double kIntakeVelocity = 2300; // Encoder units.
 
@@ -129,7 +130,9 @@ public final class Constants {
 
   public static final class ClimberConstants {
     public static final int kClimberMotorCanId = 41;
-    public static final double kClimbSpeed = 0.4;
+    public static final double kClimbSpeed = 0.5;
+
+    public static final double kClimberUpPosition = 100; // TODO: Update. Encoder units - check dashboard after raising to some height manually.
 
     public static final int kClimberUpButton = 5; // Left bumper
     public static final int kClimberDownButton = 6; // Right bumper 
@@ -150,16 +153,13 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXYController = 0.01;
-    public static final double kPThetaController = 0.05;
+    public static final double kPXYController = 4;
+    public static final double kPThetaController = 2;
     public static final Pose2d kRobotControllerTolerance = new Pose2d(0.1, 0.1, new Rotation2d(Units.degreesToRadians(1)));
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularAccelerationRadiansPerSecondSquared);
-    
-    public static final double kFindHubMaxTime = 4.0;
-    public static final double kAimAtHubMaxTime = 5.0;
   }
 
   public static final class NeoMotorConstants {
