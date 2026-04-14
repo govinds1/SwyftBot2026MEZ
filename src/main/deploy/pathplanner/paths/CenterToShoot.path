@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.573,
-        "y": 5.969329529243937
+        "x": 3.540642857142857,
+        "y": 3.824446428571429
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4838774777083863,
-        "y": 5.421840352062732
+        "x": 2.732748317856374,
+        "y": 4.406467034718734
       },
       "isLocked": false,
-      "linkedName": "LStart"
+      "linkedName": "CStart"
     },
     {
       "anchor": {
-        "x": 3.1851069900142646,
-        "y": 4.960114122681883
+        "x": 1.418910714285714,
+        "y": 5.573660714285714
       },
       "prevControl": {
-        "x": 3.2517276411039284,
-        "y": 5.446908196685039
+        "x": 1.837607217438124,
+        "y": 5.347039829891987
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LShoot"
+      "linkedName": "CShootLeft"
     }
   ],
   "rotationTargets": [],
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -36.60707481260748
+    "rotation": -25.271116011725077
   },
   "reversed": false,
-  "folder": "LShootTwiceAndClimb",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

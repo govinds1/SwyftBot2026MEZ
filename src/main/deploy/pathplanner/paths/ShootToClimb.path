@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.1851069900142646,
-        "y": 4.960114122681883
+        "x": 1.418910714285714,
+        "y": 5.573660714285714
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.587908554636662,
-        "y": 5.630066774776632
+        "x": 1.530714113160703,
+        "y": 5.350053916535735
       },
       "isLocked": false,
-      "linkedName": "LShoot"
+      "linkedName": "CShootLeft"
     },
     {
       "anchor": {
-        "x": 1.0502282453637657,
-        "y": 6.0
+        "x": 1.1111785714285711,
+        "y": 4.828625
       },
       "prevControl": {
-        "x": 1.3542314450576578,
-        "y": 6.108755782055713
+        "x": 1.3217321428571427,
+        "y": 5.006785714285715
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Depot"
+      "linkedName": "ClimbEntrance"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "LShootTwiceAndClimb",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -36.60707481260748
+    "rotation": -25.271116011725077
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
