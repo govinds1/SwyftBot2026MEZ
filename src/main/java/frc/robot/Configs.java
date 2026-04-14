@@ -106,7 +106,7 @@ public final class Configs {
                 intakeMotorConfig
                         .inverted(false)
                         .idleMode(IdleMode.kCoast)
-                        .smartCurrentLimit(40);
+                        .smartCurrentLimit(50);
                 extenderMotorConfig
                         .inverted(false)
                         .idleMode(IdleMode.kBrake)

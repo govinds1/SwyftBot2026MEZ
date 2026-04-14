@@ -119,6 +119,8 @@ public final class Constants {
     public static final double kIntakeExtendTime = 1.0;
     public static final double kIntakeRetractTime = 1.8;
 
+    public static final double kIntakeVelocity = 2300; // Encoder units.
+
     public static final int kRollerRunButton = 2; // B button
     public static final int kRollerReverseButton = 3; // X button
     public static final int kExtenderOutAxis = 2; // Left trigger
@@ -162,54 +164,5 @@ public final class Constants {
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
-  }
-  
-  public static final class FieldConstants {
-    // Locations of field landmarks relative to origin (BOTTOM LEFT CORNER OF FIELD)
-    // Origin is marked by PathPlanner as the bottom of the blue alliance wall.
-    // https://www.chiefdelphi.com/t/pathplanner-2024-beta/442364/370
-    // X is forward axis, positive means FURTHER from the BLUE driver station (all landmarks will be positive)
-    // Y is left axis, positive means towards the left side of the field when looking from our driver station. (all landmarks will be positive)
-    // All units are in meters. Conversion factor from inches to meters is 0.0254.
-
-    // Important Field locations
-    private static final Translation2d kCenterOfField = new Translation2d(Units.inchesToMeters(325.61), Units.inchesToMeters(158.84));
-    private static final double kCenterXMeters = kCenterOfField.getX();
-    private static final double kCenterYMeters = kCenterOfField.getY();
-    public static final Translation2d kBlueHub = new Translation2d(Units.inchesToMeters(181.56), kCenterYMeters);
-    public static final Translation2d kBlueDepot = new Translation2d(Units.inchesToMeters(13.50), kCenterYMeters + (Units.inchesToMeters(75.93)));
-    public static final Translation2d kBlueOutpost = new Translation2d(0, Units.inchesToMeters(26.22));
-    public static final Translation2d kBlueTower = new Translation2d(Units.inchesToMeters(41.56), kCenterYMeters - (Units.inchesToMeters(11.38)));
-    public static final Translation2d kBlueLeftTrench = new Translation2d(kBlueHub.getX(), Units.inchesToMeters(316.62 - 25.62));
-    public static final Translation2d kBlueRightTrench = new Translation2d(kBlueHub.getX(), Units.inchesToMeters(25.62));
-    public static final Translation2d kRedHub = kBlueHub.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-    public static final Translation2d kRedDepot = kBlueDepot.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-    public static final Translation2d kRedOutpost = kBlueOutpost.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-    public static final Translation2d kRedTower = kBlueTower.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-    public static final Translation2d kRedLeftTrench = kBlueLeftTrench.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-    public static final Translation2d kRedRightTrench = kBlueRightTrench.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-
-    public static final double kHubHeightMeters = 1.83;
-
-    // Robot starting poses, marking the center of the robot.
-    private static final double kRobotPoseXAtBlueStartLine = Units.inchesToMeters(156.61 - (DriveConstants.kFullWidth / 2.0));
-    public static final Rotation2d kRobotRotAtBlueStartLine = new Rotation2d(0);
-    public static final Pose2d kBlueLeftStart = new Pose2d(kRobotPoseXAtBlueStartLine, kCenterYMeters + Units.inchesToMeters(158.84 - 26.22), kRobotRotAtBlueStartLine);
-    public static final Pose2d kBlueCenterStart = new Pose2d(kRobotPoseXAtBlueStartLine, kCenterYMeters, kRobotRotAtBlueStartLine);
-    public static final Pose2d kBlueRightStart = new Pose2d(kRobotPoseXAtBlueStartLine, Units.inchesToMeters(26.22), kRobotRotAtBlueStartLine);
-    public static final Pose2d kRedRightStart = kBlueRightStart.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-    public static final Pose2d kRedCenterStart = kBlueCenterStart.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-    public static final Pose2d kRedLeftStart = kBlueLeftStart.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-
-    // Useful distances and poses for Auto.
-    public static final Pose2d kBlueRightShootingPosition = new Pose2d(kBlueRightStart.getTranslation(), Rotation2d.fromDegrees(80));
-    public static final Pose2d kBlueCenterShootingPosition = new Pose2d(kBlueCenterStart.getTranslation().minus(new Translation2d(Units.inchesToMeters(60), 0)), Rotation2d.fromDegrees(0));
-    public static final Pose2d kBlueLeftShootingPosition = new Pose2d(kBlueLeftStart.getTranslation(), Rotation2d.fromDegrees(280));
-    public static final Pose2d kRedRightShootingPosition = kBlueRightShootingPosition.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-    public static final Pose2d kRedCenterShootingPosition = kBlueCenterShootingPosition.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-    public static final Pose2d kRedLeftShootingPosition = kBlueLeftShootingPosition.rotateAround(kCenterOfField, new Rotation2d(Math.PI));
-    public static final double kOutpostToStartLineMeters = kBlueRightStart.getTranslation().getDistance(kBlueOutpost);
-    public static final double kStartLineToCenterLineMeters = kCenterXMeters - (kRobotPoseXAtBlueStartLine + (DriveConstants.kFullWidth / 2.0));
-    public static final double kEdgeToCenterFuelPickupMeters = kCenterYMeters * 0.5;
   }
 }

@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
@@ -32,11 +33,14 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Subsytems/Intake/Extender/EncoderValue", m_extenderMotor.getEncoder().getPosition());
-    System.out.printf("Intake Extension Encoder: %s", m_extenderMotor.getEncoder().getPosition());
   }
 
   public void runRoller() {
     m_rollerMotor.set(IntakeConstants.kIntakeRollerSpeed);
+  }
+
+  public void runRollerRPM() {
+    m_rollerMotor.getClosedLoopController().setSetpoint(IntakeConstants.kIntakeVelocity, ControlType.kVelocity);
   }
 
   public void stopRoller() {
@@ -63,6 +67,15 @@ public class IntakeSubsystem extends SubsystemBase {
     return Commands.sequence(
       Commands.runOnce(() -> this.extend(), this),
       Commands.waitSeconds(IntakeConstants.kIntakeExtendTime),
+      Commands.runOnce(() -> this.stopExtender(), this)
+    );
+  }
+
+  public Command extendAndRunAuto() {
+    return Commands.sequence(
+      Commands.runOnce(() -> this.extend(), this),
+      Commands.waitSeconds(IntakeConstants.kIntakeExtendTime),
+      Commands.runOnce(() -> runRollerRPM(), this),
       Commands.runOnce(() -> this.stopExtender(), this)
     );
   }
